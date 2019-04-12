@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="user-scalable=no">
+  <title>LEJUOMMU</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <!-- Stations -->
+  <div class="padding"></div>
+  <div class="info">First click Radio to start it.</div>
+  <div id="station0" class="station">
+    <div class="title">
+      <div id="title0" class="subtitle"></div>
+      <div id="live0" class="live">LIVE</div>
+      <div id="mute0" class="live">MUTE</div>
+      <div id="playing0" class="playing">
+        <div class="rect1"></div>
+        <div class="rect2"></div>
+        <div class="rect3"></div>
+        <div class="rect4"></div>
+        <div class="rect5"></div>
+      </div>
+    </div>
+  </div>
+  <div class="padding"></div>
+  <div id="fetch-result" class="info">Unknown</div>
+  <div id="switch-button" class="button">Switch (<span id="current-source">Radio</span>)</div>
+  <div id="fetch-button" class="button">Fetch</div>
+  <div id="automatic-button" class="button">Automatic <span id="automatic-state">OFF</span></div>
+  <script src= "https://player.twitch.tv/js/embed/v1.js"></script>
+  <div id="twitch-player"></div>
+  <script type="text/javascript">
+    var options = {
+      width: 400,
+      height: 300,
+//      channel: "lara6683",
+      video: "408440508",
+//      collection: "<collection ID>",
+    };
+    const player = new Twitch.Player("twitch-player", options);
+    player.pause();
+    player.setVolume(0.5);
+  </script>
+
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.1.1/howler.core.min.js"></script>
+  <script src="./radio.js"></script>
+  <script src="./lejuommu.js"></script>
+</body>
+</html>
