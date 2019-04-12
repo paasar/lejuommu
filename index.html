@@ -9,7 +9,9 @@
 <body>
   <!-- Stations -->
   <div class="padding"></div>
-  <div class="info">First click Radio to start it.</div>
+  <div class="info">This page switches automatically to Twitch stream/video when Radio Nova plays music.<br/>
+    This is to enable listening to the nice hosts without listening to the repetitive playlists.<br/>
+    First you must click the Radio to start it.</div>
   <div id="station0" class="station">
     <div class="title">
       <div id="title0" class="subtitle"></div>
@@ -26,9 +28,9 @@
   </div>
   <div class="padding"></div>
   <div id="fetch-result" class="info">Unknown</div>
-  <div id="switch-button" class="button">Switch (<span id="current-source">Radio</span>)</div>
-  <div id="fetch-button" class="button">Fetch</div>
-  <div id="automatic-button" class="button">Automatic <span id="automatic-state">OFF</span></div>
+  <div id="switch-button" class="button">Switch (<span id="current-source">Radio</span> is playing)</div>
+  <div id="fetch-button" class="button">Update now playing data</div>
+  <div id="automatic-button" class="button">Automatic changing is <span id="automatic-state">ON</span></div>
   <script src= "https://player.twitch.tv/js/embed/v1.js"></script>
   <div id="twitch-player"></div>
   <script type="text/javascript">

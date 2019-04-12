@@ -1,45 +1,47 @@
-    window.lejuommu = {};
-    window.lejuommu.state = true;
-    window.lejuommu.automaticEnabled = false;
+    window.lejuommu = {
+      state: true,
+      automaticChanging: true,
+      };
 
     const mute = document.getElementById('mute0');
 
-    window.lejuommu.updateNowPlaying = function() {
-        if (!window.lejuommu.automaticEnabled) {
-          return;
-        }
+    window.lejuommu.updateNowPlaying = function(shouldChangeChannel) {
+        console.log('fetching data');
 
         fetch('https://listenapi.planetradio.co.uk/api9/initdadi/radio-nova')
           .then(function(response) { return response.json(); })
           .then(function(json) {
             const track = json.stationNowPlaying.nowPlayingTrack;
-            document.getElementById('fetch-result').innerHTML = track !== '' ? track : 'Juonto/mainos';
-            //console.log(JSON.stringify(json));
-            if (track === '') {
-              window.lejuommu.switchToRadio();
-            } else {
-              window.lejuommu.switchToTwitch();
+            const artist = json.stationNowPlaying.nowPlayingArtist;
+            document.getElementById('fetch-result').innerHTML =
+              track !== '' ? track + ' by ' + artist : 'Juonto/mainos';
+
+            if (shouldChangeChannel) {
+              if (track === '') {
+                window.lejuommu.switchToRadio();
+              } else {
+                window.lejuommu.switchToTwitch();
+              }
             }
           });
     };
 
     window.lejuommu.repeatingUpdate = function() {
-      console.log('fetching data');
-      window.lejuommu.updateNowPlaying();
-      setTimeout(window.lejuommu.repeatingUpdate, 10000);
+      window.lejuommu.updateNowPlaying(window.lejuommu.automaticChanging);
+      setTimeout(window.lejuommu.repeatingUpdate, 3000);
     };
 
     window.lejuommu.repeatingUpdate();
 
     window.lejuommu.switchToRadio = function() {
       player.pause();
-      if (radio) radio.volume(1);
+      radio.volume(1);
       mute.style.opacity = 0;
       document.getElementById('current-source').innerHTML = 'Radio';
     };
 
     window.lejuommu.switchToTwitch = function() {
-      if (radio) radio.volume(0);
+      radio.volume(0);
       mute.style.opacity = 1;
       player.play();
       document.getElementById('current-source').innerHTML = 'Twitch';
@@ -57,16 +59,18 @@
 
     document.getElementById('fetch-button').addEventListener('click',
       function() {
-        window.lejuommu.updateNowPlaying();
+        window.lejuommu.updateNowPlaying(false);
       });
 
     document.getElementById('automatic-button').addEventListener('click',
     function() {
       const autoState = document.getElementById('automatic-state');
-      if (!window.lejuommu.automaticEnabled) {
+
+      if (window.lejuommu.automaticChanging) {
         autoState.innerHTML = 'OFF';
       } else {
         autoState.innerHTML = 'ON';
       }
-      window.lejuommu.automaticEnabled = !window.lejuommu.automaticEnabled;
+
+      window.lejuommu.automaticChanging = !window.lejuommu.automaticChanging;
     });

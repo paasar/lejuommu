@@ -97,7 +97,9 @@ Radio.prototype = {
   volume: function(volume) {
     var self = this;
     var sound = self.stations[self.index].howl;
-    sound.volume(volume);
+    if (sound) {
+      sound.volume(volume);
+    }
   },
 
   /**
