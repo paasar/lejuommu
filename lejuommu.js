@@ -1,5 +1,5 @@
     window.lejuommu = {
-      state: true,
+      radioIsPlaying: true,
       automaticChanging: true,
       };
 
@@ -37,6 +37,7 @@
       player.pause();
       radio.volume(0.6);
       mute.style.opacity = 0;
+      window.lejuommu.radioIsPlaying = true;
       document.getElementById('current-source').innerHTML = 'Radio';
     };
 
@@ -44,17 +45,17 @@
       radio.volume(0);
       mute.style.opacity = 1;
       player.play();
+      window.lejuommu.radioIsPlaying = false;
       document.getElementById('current-source').innerHTML = 'Twitch';
     };
 
     document.getElementById('switch-button').addEventListener('click',
       function() {
-        if (!window.lejuommu.state) {
+        if (!window.lejuommu.radioIsPlaying) {
           window.lejuommu.switchToRadio();
         } else {
           window.lejuommu.switchToTwitch();
         }
-        window.lejuommu.state = !window.lejuommu.state;
       });
 
     document.getElementById('fetch-button').addEventListener('click',
