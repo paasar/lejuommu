@@ -14,7 +14,7 @@
             const track = json.stationNowPlaying.nowPlayingTrack;
             const artist = json.stationNowPlaying.nowPlayingArtist;
             document.getElementById('fetch-result').innerHTML =
-              track !== '' ? track + ' by ' + artist : 'Juonto/mainos';
+              track !== '' ? track + ' by ' + artist : 'Host(s) talking / advertisement';
 
             if (shouldChangeChannel) {
               if (track === '') {
@@ -35,7 +35,7 @@
 
     window.lejuommu.switchToRadio = function() {
       player.pause();
-      radio.volume(1);
+      radio.volume(0.6);
       mute.style.opacity = 0;
       document.getElementById('current-source').innerHTML = 'Radio';
     };
