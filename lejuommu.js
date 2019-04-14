@@ -76,7 +76,7 @@
       function() {
         const searchTerm = document.getElementById('search-input').value;
         if (searchTerm) {
-          fetch('https://api.twitch.tv/kraken/channels/' + searchTerm + '/videos?broadcasts=true',
+          fetch('https://api.twitch.tv/kraken/channels/' + searchTerm + '/videos?broadcasts=true&limit=20',
                 {headers: {'Client-ID': window.twitchClientId}})
             .then(function(response) { return response.json(); })
             .then(function(json) {
@@ -84,22 +84,20 @@
               if (json.videos) {
                  const searchResults = document.getElementById('search-results');
 
-                 console.log('remove children');
                  while (searchResults.firstChild) {
                    searchResults.removeChild(searchResults.firstChild);
                  }
 
                  const videos = json.videos;
-                 console.log('vids', videos.length);
-                 //title, _id
                  videos.forEach(function(video) {
-                    console.log('vid', video.title);
                     const videoElement = document.createElement('div');
                     videoElement.setAttribute("data-video-id", video._id);
                     videoElement.appendChild(document.createTextNode(video.created_at + " | " + video.title));
                     videoElement.className = 'found-video';
                     searchResults.appendChild(videoElement);
                  });
+
+                 searchResults.scrollIntoView();
               } else {
                 console.log('Search with "' + searchTerm + '" failed: ' +
                             json.status + ", " +
