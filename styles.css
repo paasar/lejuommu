@@ -10,10 +10,6 @@ body {
   padding: 0;
   margin: 0;
   background: #0b62b3;
-  background: -moz-linear-gradient(-45deg, #0b62b3 0%, #7dff5f 100%);
-  background: -webkit-linear-gradient(-45deg, #0b62b3 0%, #7dff5f 100%);
-  background: linear-gradient(135deg, #0b62b3 0%, #7dff5f 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#0b62b3', endColorstr='#7dff5f', GradientType=1);
   font-family: "Helvetica Neue", "Futura", "Trebuchet MS", Arial;
   -webkit-user-select: none;
   user-select: none;
@@ -146,9 +142,9 @@ body {
 }
 
 .button, .info {
-  margin: 30px;
+  margin: 30px 0;
   padding: 10px;
-  background-color: #aaa;
+  background-color: #33bb99;
   border-radius: 3px;
 }
 
@@ -157,8 +153,44 @@ body {
   -webkit-box-shadow: 2px 2px 5px 0px rgba(0,0,0,1);
   box-shadow: 2px 2px 5px 0px rgba(0,0,0,1);
   cursor: pointer;
+  color: #fff;
 }
 
 .info {
   background-color: #fff;
+}
+
+.container {
+  margin: 30px;
+}
+
+.search-container {
+  margin: 10px 0;
+}
+
+label {
+  color: #fff;
+  display: block;
+  margin-bottom: 5px;
+}
+
+#search-input {
+  min-width: 300px;
+  padding: 5px;
+  margin-right: 5px;
+}
+
+#search-button {
+  margin-top: 10px;
+}
+
+.found-video {
+  width: 600px;
+  color: #fff;
+  background-color: #33bb99;
+  padding: 10px;
+  margin-bottom: 3px;
+  cursor: pointer;
+  border-radius: 3px;
+  box-shadow: 2px 2px 3px 0px rgba(0,0,0,1);
 }

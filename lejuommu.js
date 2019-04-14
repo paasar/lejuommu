@@ -6,24 +6,24 @@
     const mute = document.getElementById('mute0');
 
     window.lejuommu.updateNowPlaying = function(shouldChangeChannel) {
-        console.log('fetching data');
+      console.log('fetching data');
 
-        fetch('https://listenapi.planetradio.co.uk/api9/initdadi/radio-nova')
-          .then(function(response) { return response.json(); })
-          .then(function(json) {
-            const track = json.stationNowPlaying.nowPlayingTrack;
-            const artist = json.stationNowPlaying.nowPlayingArtist;
-            document.getElementById('fetch-result').innerHTML =
-              track !== '' ? track + ' by ' + artist : 'Host(s) talking / advertisement';
+      fetch('https://listenapi.planetradio.co.uk/api9/initdadi/radio-nova')
+        .then(function(response) { return response.json(); })
+        .then(function(json) {
+          const track = json.stationNowPlaying.nowPlayingTrack;
+          const artist = json.stationNowPlaying.nowPlayingArtist;
+          document.getElementById('fetch-result').innerHTML =
+            track !== '' ? track + ' by ' + artist : 'Host(s) talking / advertisement';
 
-            if (shouldChangeChannel) {
-              if (track === '') {
-                window.lejuommu.switchToRadio();
-              } else {
-                window.lejuommu.switchToTwitch();
-              }
+          if (shouldChangeChannel) {
+            if (track === '') {
+              window.lejuommu.switchToRadio();
+            } else {
+              window.lejuommu.switchToTwitch();
             }
-          });
+          }
+        });
     };
 
     window.lejuommu.repeatingUpdate = function() {
@@ -60,14 +60,60 @@
       });
 
     document.getElementById('automatic-button').addEventListener('click',
-    function() {
-      const autoState = document.getElementById('automatic-state');
+      function() {
+        const autoState = document.getElementById('automatic-state');
 
-      if (window.lejuommu.automaticChanging) {
-        autoState.innerHTML = 'OFF';
-      } else {
-        autoState.innerHTML = 'ON';
-      }
+        if (window.lejuommu.automaticChanging) {
+          autoState.innerHTML = 'OFF';
+        } else {
+          autoState.innerHTML = 'ON';
+        }
 
-      window.lejuommu.automaticChanging = !window.lejuommu.automaticChanging;
-    });
+        window.lejuommu.automaticChanging = !window.lejuommu.automaticChanging;
+      });
+
+    document.getElementById('search-button').addEventListener('click',
+      function() {
+        const searchTerm = document.getElementById('search-input').value;
+        if (searchTerm) {
+          fetch('https://api.twitch.tv/kraken/channels/' + searchTerm + '/videos?broadcasts=true',
+                {headers: {'Client-ID': window.twitchClientId}})
+            .then(function(response) { return response.json(); })
+            .then(function(json) {
+              console.log('twitch response', json);
+              if (json.videos) {
+                 const searchResults = document.getElementById('search-results');
+
+                 console.log('remove children');
+                 while (searchResults.firstChild) {
+                   searchResults.removeChild(searchResults.firstChild);
+                 }
+
+                 const videos = json.videos;
+                 console.log('vids', videos.length);
+                 //title, _id
+                 videos.forEach(function(video) {
+                    console.log('vid', video.title);
+                    const videoElement = document.createElement('div');
+                    videoElement.setAttribute("data-video-id", video._id);
+                    videoElement.appendChild(document.createTextNode(video.created_at + " | " + video.title));
+                    videoElement.className = 'found-video';
+                    searchResults.appendChild(videoElement);
+                 });
+              } else {
+                console.log('Search with "' + searchTerm + '" failed: ' +
+                            json.status + ", " +
+                            json.error + ", " +
+                            json.message);
+              }
+            })
+            .catch(function(error) {
+              console.log(error);
+            });
+        }
+      });
+
+    document.getElementById('search-results').addEventListener('click',
+      function(event) {
+        player.setVideo(event.target.dataset.videoId);
+      });

@@ -7,11 +7,13 @@
   <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
+  <script src="twitchClientId.js"></script>
   <!-- Stations -->
-  <div class="padding"></div>
-  <div class="info">This page switches automatically to Twitch stream/video when Radio Nova plays music.<br/>
-    This is to enable listening to the nice hosts without listening to the repetitive playlists.<br/>
-    First you must click the Radio to start it.</div>
+  <div class="container">
+    <div class="info">This page switches automatically to Twitch stream/video when Radio Nova plays music.<br/>
+      This is to enable listening to the nice hosts without listening to the repetitive playlists.<br/>
+      First you must click the Radio to start it.</div>
+  </div>
   <div id="station0" class="station">
     <div class="title">
       <div id="title0" class="subtitle"></div>
@@ -27,23 +29,33 @@
     </div>
   </div>
   <div class="padding"></div>
-  <div id="fetch-result" class="info">Unknown</div>
-  <div id="switch-button" class="button">Switch (<span id="current-source">Radio</span> is playing)</div>
-  <div id="automatic-button" class="button">Automatic changing is <span id="automatic-state">ON</span></div>
-  <script src= "https://player.twitch.tv/js/embed/v1.js"></script>
-  <div id="twitch-player"></div>
-  <script type="text/javascript">
-    var options = {
-      width: 400,
-      height: 300,
-//      channel: "lara6683",
-      video: "408440508",
-//      collection: "<collection ID>",
-    };
-    const player = new Twitch.Player("twitch-player", options);
-    player.pause();
-    player.setVolume(1);
-  </script>
+
+  <div class="container state-container">
+    <div id="fetch-result" class="info">Unknown</div>
+    <div id="switch-button" class="button">Switch (<span id="current-source">Radio</span> is playing)</div>
+    <div id="automatic-button" class="button">Automatic changing is <span id="automatic-state">ON</span></div>
+  </div>
+
+  <div class="container twitch-container">
+    <script src= "https://player.twitch.tv/js/embed/v1.js"></script>
+    <div id="twitch-player"></div>
+    <script type="text/javascript">
+      var options = {
+        width: 400,
+        height: 300,
+        video: "408440508",
+      };
+      const player = new Twitch.Player("twitch-player", options);
+      player.pause();
+      player.setVolume(1);
+    </script>
+    <div class="search-container">
+      <label for="search-input">Search for streamer/channel</label>
+      <input type="text" id="search-input" placeholder="lara6683 or kylelandrypiano or ZanB"/>
+      <div class="button" id="search-button">Search</div>
+      <div id="search-results"></div>
+    </div>
+  </div>
 
   <!-- Scripts -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.1.1/howler.core.min.js"></script>
