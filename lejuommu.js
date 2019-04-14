@@ -58,11 +58,6 @@
         }
       });
 
-    document.getElementById('fetch-button').addEventListener('click',
-      function() {
-        window.lejuommu.updateNowPlaying(false);
-      });
-
     document.getElementById('automatic-button').addEventListener('click',
     function() {
       const autoState = document.getElementById('automatic-state');
