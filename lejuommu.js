@@ -115,3 +115,15 @@
       function(event) {
         player.setVideo(event.target.dataset.videoId);
       });
+
+    document.getElementById('watch-button').addEventListener('click',
+      function() {
+        const channelName = document.getElementById('watch-input').value;
+        player.setChannel(channelName);
+      });
+
+    document.getElementById('watch-video-button').addEventListener('click',
+      function() {
+        const videoId = document.getElementById('watch-video-input').value;
+        player.setVideo('v' + videoId);
+      });
