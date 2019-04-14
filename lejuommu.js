@@ -28,7 +28,8 @@
 
     window.lejuommu.repeatingUpdate = function() {
       window.lejuommu.updateNowPlaying(window.lejuommu.automaticChanging);
-      setTimeout(window.lejuommu.repeatingUpdate, 3000);
+      const checkIntervalMillis = window.lejuommu.radioIsPlaying ? 7000 : 1000;
+      setTimeout(window.lejuommu.repeatingUpdate, checkIntervalMillis);
     };
 
     window.lejuommu.repeatingUpdate();
