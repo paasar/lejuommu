@@ -5,6 +5,23 @@
 
     const mute = document.getElementById('mute0');
 
+    window.lejuommu.storeTwitchSource = function(sourceType, sourceValue) {
+      window.localStorage.setItem('lejuommu.twitch.type', sourceType);
+      window.localStorage.setItem('lejuommu.twitch.value', sourceValue);
+    }
+
+    window.lejuommu.loadTwitchSource = function() {
+      const sourceType = window.localStorage.getItem('lejuommu.twitch.type');
+      const sourceValue = window.localStorage.getItem('lejuommu.twitch.value');
+      if (sourceType && sourceValue) {
+        return {type: sourceType,
+                value: sourceValue};
+      } else {
+        return {type: 'videoId',
+                value: 'v408440508'};
+      }
+    }
+
     window.lejuommu.updateNowPlaying = function(shouldChangeChannel) {
       console.log('fetching data');
 
@@ -113,17 +130,24 @@
 
     document.getElementById('search-results').addEventListener('click',
       function(event) {
-        player.setVideo(event.target.dataset.videoId);
+        const videoId = event.target.dataset.videoId;
+        player.setVideo(videoId);
+        window.scrollTo(0,0);
+        window.lejuommu.storeTwitchSource('videoId', videoId);
       });
 
     document.getElementById('watch-button').addEventListener('click',
       function() {
         const channelName = document.getElementById('watch-input').value;
         player.setChannel(channelName);
+        window.scrollTo(0,0);
+        window.lejuommu.storeTwitchSource('channel', channelName);
       });
 
     document.getElementById('watch-video-button').addEventListener('click',
       function() {
         const videoId = document.getElementById('watch-video-input').value;
         player.setVideo('v' + videoId);
+        window.scrollTo(0,0);
+        window.lejuommu.storeTwitchSource('videoId', 'v' + videoId);
       });

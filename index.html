@@ -39,16 +39,7 @@
   <div class="container twitch-container">
     <script src= "https://player.twitch.tv/js/embed/v1.js"></script>
     <div id="twitch-player"></div>
-    <script type="text/javascript">
-      var options = {
-        width: 400,
-        height: 300,
-        video: "408440508",
-      };
-      const player = new Twitch.Player("twitch-player", options);
-      player.pause();
-      player.setVolume(1);
-    </script>
+
     <div class="search-container">
       <label for="search-input">Search for streamer/channel</label>
       <input type="text" id="search-input" placeholder="lara6683 or kylelandrypiano or ZanB"/>
@@ -71,5 +62,19 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.1.1/howler.core.min.js"></script>
   <script src="./radio.js"></script>
   <script src="./lejuommu.js"></script>
+  <script type="text/javascript">
+    const twitchSource = window.lejuommu.loadTwitchSource();
+    const options = (function() {
+      if (twitchSource.type === 'videoId') {
+        return {width: 400, height: 300, video: twitchSource.value};
+      } else {
+        return {width: 400, height: 300, channel: twitchSource.value};
+      };
+    })();
+
+    const player = new Twitch.Player("twitch-player", options);
+    player.pause();
+    player.setVolume(1);
+  </script>
 </body>
 </html>
