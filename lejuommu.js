@@ -93,34 +93,45 @@
       function() {
         const searchTerm = document.getElementById('search-input').value;
         if (searchTerm) {
-          fetch('https://api.twitch.tv/kraken/channels/' + searchTerm + '/videos?broadcasts=true&limit=20',
+          fetch('https://api.twitch.tv/helix/users?login=' + searchTerm,
                 {headers: {'Client-ID': window.twitchClientId}})
             .then(function(response) { return response.json(); })
-            .then(function(json) {
-              console.log('twitch response', json);
-              if (json.videos) {
-                 const searchResults = document.getElementById('search-results');
+            .then(function(json) { if (json.data[0]) {
+                                     return json.data[0].id;
+                                   } else {
+                                     throw new Error('Could not find user with: ' + searchTerm);
+                                   }
+                                 })
+            .then(function(userId) {
+              fetch('https://api.twitch.tv/helix/videos?user_id=' + userId,
+                    {headers: {'Client-ID': window.twitchClientId}})
+              .then(function(response) { return response.json(); })
+              .then(function(json) {
+                console.log('twitch response', json);
+                if (json.data) {
+                   const searchResults = document.getElementById('search-results');
 
-                 while (searchResults.firstChild) {
-                   searchResults.removeChild(searchResults.firstChild);
-                 }
+                   while (searchResults.firstChild) {
+                     searchResults.removeChild(searchResults.firstChild);
+                   }
 
-                 const videos = json.videos;
-                 videos.forEach(function(video) {
-                    const videoElement = document.createElement('div');
-                    videoElement.setAttribute("data-video-id", video._id);
-                    videoElement.appendChild(document.createTextNode(video.created_at + " | " + video.title));
-                    videoElement.className = 'found-video';
-                    searchResults.appendChild(videoElement);
-                 });
+                   const videos = json.data;
+                   videos.forEach(function(video) {
+                      const videoElement = document.createElement('div');
+                      videoElement.setAttribute("data-video-id", video.id);
+                      videoElement.appendChild(document.createTextNode(video.created_at + " | " + video.title));
+                      videoElement.className = 'found-video';
+                      searchResults.appendChild(videoElement);
+                   });
 
-                 searchResults.scrollIntoView();
-              } else {
-                console.log('Search with "' + searchTerm + '" failed: ' +
-                            json.status + ", " +
-                            json.error + ", " +
-                            json.message);
-              }
+                   searchResults.scrollIntoView();
+                } else {
+                  console.log('Search with "' + searchTerm + '" failed: ' +
+                              json.status + ", " +
+                              json.error + ", " +
+                              json.message);
+                }
+              })
             })
             .catch(function(error) {
               console.log(error);
@@ -131,9 +142,9 @@
     document.getElementById('search-results').addEventListener('click',
       function(event) {
         const videoId = event.target.dataset.videoId;
-        player.setVideo(videoId);
+        player.setVideo('v' + videoId);
         window.scrollTo(0,0);
-        window.lejuommu.storeTwitchSource('videoId', videoId);
+        window.lejuommu.storeTwitchSource('videoId', 'v' + videoId);
       });
 
     document.getElementById('watch-button').addEventListener('click',
