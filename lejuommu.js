@@ -119,7 +119,7 @@
                    videos.forEach(function(video) {
                       const videoElement = document.createElement('div');
                       videoElement.setAttribute("data-video-id", video.id);
-                      videoElement.appendChild(document.createTextNode(video.created_at + " | " + video.title));
+                      videoElement.appendChild(document.createTextNode(video.created_at + " | " + video.duration + " | " + video.title));
                       videoElement.className = 'found-video';
                       searchResults.appendChild(videoElement);
                    });
